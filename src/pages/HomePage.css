@@ -18,13 +18,14 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    width:100%;
   }
   
   .project-card {
     background: linear-gradient(135deg, #4CAF50, #81C784); /* Green gradient background */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 80%;
+    width: 100%;
     max-width: 1200px;
     margin: 10px;
     padding: 60px;

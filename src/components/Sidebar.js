@@ -11,8 +11,8 @@ const Sidebar = () => {
       </div>
       <nav className="sidebar-nav">
         <ul>
-          <li><Link to="/dashboard"><i className="icon-dashboard"></i> Dashboard</Link></li>
-          <li><Link to="/projects"><i className="icon-projects"></i> Projects</Link></li>
+        <li><Link to="/"><i className="icon-dashboard"></i> Dashboard</Link></li>
+        <li><Link to="/projects"><i className="icon-projects"></i> Projects</Link></li>
           <li><Link to="/tasks"><i className="icon-tasks"></i> Tasks</Link></li>
           <li><Link to="/team"><i className="icon-team"></i> Team Members</Link></li>
           <li><Link to="/calendar"><i className="icon-calendar"></i> Calendar</Link></li>
