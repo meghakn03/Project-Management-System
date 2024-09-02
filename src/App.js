@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
 import TaskPage from './components/Task/TaskPage'; // Import the TaskPage component
 import Sidebar from './components/Sidebar';
+import TeamMembersPage from './pages/TeamMembersPage'; // Import the TeamMembersPage component
 import './App.css';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/projects" element={<ProjectPage />} />
             <Route path="/tasks" element={<TaskPage />} /> {/* Add this route */}
-            {/* Add more routes here */}
+            <Route path="/team" element={<TeamMembersPage />} /> {/* Add Team Members route */}
           </Routes>
         </main>
       </div>
