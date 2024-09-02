@@ -1,0 +1,50 @@
+/* src/components/Project/ProjectPage.css */
+.project-form {
+    margin-bottom: 20px;
+  }
+  
+  .project-form input,
+  .project-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .project-form button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .project-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .project-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .project-card {
+    background: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  
+  .project-card.completed {
+    background: #d4edda;
+  }
+  
+  .project-card.ongoing {
+    background: #fff3cd;
+  }
+  
+  .project-card.overdue {
+    background: #f8d7da;
+  }
+  
