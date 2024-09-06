@@ -10,6 +10,7 @@ import CalendarPage from './components/Calendar/CalendarPage';
 import './App.css';
 import ReportPage from './components/Report/ReportPage';
 import SettingsPage from './components/Settings/SettingsPage';
+import HelpSupportPage from './components/HelpSupport/HelpSupportPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/report" element={<ReportPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/help" element={<HelpSupportPage />} />
           </Routes>
         </main>
       </div>
