@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import TeamMembersPage from './pages/TeamMembersPage'; // Import the TeamMembersPage component
 import CalendarPage from './components/Calendar/CalendarPage';
 import './App.css';
+import ReportPage from './components/Report/ReportPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/tasks" element={<TaskPage />} /> {/* Add this route */}
             <Route path="/team" element={<TeamMembersPage />} /> {/* Add Team Members route */}
             <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/report" element={<ReportPage />} />
           </Routes>
         </main>
       </div>

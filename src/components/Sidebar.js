@@ -34,7 +34,7 @@ const Sidebar = () => {
             <Link to="/calendar"><i className="icon-calendar"></i> Calendar</Link>
           </li>
           <li className={selectedItem === '/reports' ? 'active' : ''} onClick={() => setSelectedItem('/reports')}>
-            <Link to="/reports"><i className="icon-reports"></i> Reports</Link>
+            <Link to="/report"><i className="icon-reports"></i> Reports</Link>
           </li>
           <li className={selectedItem === '/settings' ? 'active' : ''} onClick={() => setSelectedItem('/settings')}>
             <Link to="/settings"><i className="icon-settings"></i> Settings</Link>
