@@ -9,6 +9,7 @@ import TeamMembersPage from './pages/TeamMembersPage'; // Import the TeamMembers
 import CalendarPage from './components/Calendar/CalendarPage';
 import './App.css';
 import ReportPage from './components/Report/ReportPage';
+import SettingsPage from './components/Settings/SettingsPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/team" element={<TeamMembersPage />} /> {/* Add Team Members route */}
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/report" element={<ReportPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </main>
       </div>
