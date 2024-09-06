@@ -1,9 +1,9 @@
 import React from 'react';
 import TeamMember from '../components/Team/TeamMember';
 import './TeamMembersPage.css';
-import femaleProfile from '../assets/female.jpg';
-import maleProfile from '../assets/male.webp';
-import maleProfile1 from '../assets/male1.webp';
+import femaleProfile from '../components/assets/female.jpg';
+import maleProfile from '../components/assets/male.webp';
+import maleProfile1 from '../components/assets/male1.webp';
 
 // Sample data for team members
 const teamMembersData = [

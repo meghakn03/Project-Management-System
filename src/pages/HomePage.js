@@ -1,37 +1,21 @@
 // src/pages/HomePage.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import './HomePage.css';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-const projects = [
-  {
-    id: 1,
-    name: "Project Alpha",
-    tasks: ["Task 1", "Task 2", "Task 3"],
-    members: ["Alice", "Bob", "Charlie"],
-    dates: ["2024-09-01", "2024-10-01"], // Start Date, End Date
-    completion: {
-      completed: 70,
-      remaining: 30
-    }
-  },
-  {
-    id: 2,
-    name: "Project Beta",
-    tasks: ["Task A", "Task B", "Task C"],
-    members: ["Dave", "Eve"],
-    dates: ["2024-08-15", "2024-09-15"], // Start Date, End Date
-    completion: {
-      completed: 40,
-      remaining: 60
-    }
-  }
-];
-
 const HomePage = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/projects')  // Ensure the correct API endpoint
+      .then((response) => response.json())
+      .then((data) => setProjects(data))
+      .catch((error) => console.error('Error fetching projects:', error));
+  }, []);
+
   return (
     <div className="home-page">
       <header className="header">
@@ -39,13 +23,13 @@ const HomePage = () => {
       </header>
       <div className="dashboard">
         {projects.map((project) => (
-          <div className="project-card" key={project.id}>
+          <div className="project-card" key={project._id}>
             <h2 className="project-title">{project.name}</h2>
             <div className="dashboard-content">
               <div className="column">
                 <h3>Tasks</h3>
                 <ul>
-                  {project.tasks.map((task, index) => (
+                  {project.tasks[0]?.split(';').map((task, index) => (
                     <li key={index}>{task}</li>
                   ))}
                 </ul>
@@ -53,15 +37,15 @@ const HomePage = () => {
               <div className="column">
                 <h3>Members</h3>
                 <ul>
-                  {project.members.map((member, index) => (
+                  {project.members[0]?.split(';').map((member, index) => (
                     <li key={index}>{member}</li>
                   ))}
                 </ul>
               </div>
               <div className="column">
                 <h3>Dates & Timelines</h3>
-                <p>Start Date: {project.dates[0]}</p>
-                <p>End Date: {project.dates[1]}</p>
+                <p>Start Date: {new Date(project.start_date).toLocaleDateString()}</p>
+                <p>End Date: {new Date(project.end_date).toLocaleDateString()}</p>
               </div>
               <div className="column">
                 <h3>Completion</h3>
@@ -70,7 +54,7 @@ const HomePage = () => {
                     labels: ['Completed', 'Remaining'],
                     datasets: [
                       {
-                        data: [project.completion.completed, project.completion.remaining],
+                        data: [project.completion_completed, project.completion_remaining],
                         backgroundColor: ['#4CAF50', '#FFC107'],
                         borderColor: '#ffffff',
                         borderWidth: 1,
