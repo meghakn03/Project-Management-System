@@ -26,7 +26,38 @@ const getProject = async (req, res) => {
   }
 };
 
+// Create a new project
+const createProject = async (req, res) => {
+    const {
+      name,
+      tasks,
+      members,
+      start_date,
+      end_date,
+      completion_completed,
+      completion_remaining
+    } = req.body;
+  
+    try {
+      const newProject = new Project({
+        name,
+        tasks,
+        members,
+        start_date,
+        end_date,
+        completion_completed,
+        completion_remaining
+      });
+      await newProject.save();
+      res.status(201).json(newProject);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
 module.exports = {
   getProjects,
   getProject,
+  createProject
 };

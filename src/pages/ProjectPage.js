@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import './ProjectPage.css';
@@ -6,41 +6,10 @@ import './ProjectPage.css';
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-const initialProjects = [
-  {
-    id: 1,
-    title: 'Project Alpha',
-    description: 'Description for Project Alpha',
-    tasks: [
-      { name: 'Task 1', member: 'Alice' },
-      { name: 'Task 2', member: 'Bob' }
-    ],
-    clientDetails: 'Client Alpha Details',
-    clientNotes: 'Client Alpha Notes',
-    startDate: '2024-08-01',
-    endDate: '2024-12-01',
-    status: 'ongoing',
-  },
-  {
-    id: 2,
-    title: 'Project Beta',
-    description: 'Description for Project Beta',
-    tasks: [
-      { name: 'Task A', member: 'Dave' },
-      { name: 'Task B', member: 'Eve' }
-    ],
-    clientDetails: 'Client Beta Details',
-    clientNotes: 'Client Beta Notes',
-    startDate: '2024-07-01',
-    endDate: '2024-11-01',
-    status: 'completed',
-  },
-];
-
 const members = ['Alice', 'Bob', 'Charlie', 'Dave', 'Eve'];
 
 const ProjectPage = () => {
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState([]);
   const [newProject, setNewProject] = useState({
     title: '',
     description: '',
@@ -51,6 +20,14 @@ const ProjectPage = () => {
     endDate: '',
     status: 'ongoing',
   });
+
+  // Fetch projects from the backend
+  useEffect(() => {
+    fetch('http://localhost:4000/api/projects')
+      .then((response) => response.json())
+      .then((data) => setProjects(data))
+      .catch((error) => console.error('Error fetching projects:', error));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, dataset } = e.target;
@@ -86,20 +63,34 @@ const ProjectPage = () => {
   };
 
   const handleAddProject = () => {
-    setProjects([
-      { ...newProject, id: projects.length + 1, status: 'ongoing' },
-      ...projects,
-    ]);
-    setNewProject({
-      title: '',
-      description: '',
-      tasks: [{ name: '', member: members[0] }],
-      clientDetails: '',
-      clientNotes: '',
-      startDate: '',
-      endDate: '',
-      status: 'ongoing',
-    });
+    fetch('http://localhost:4000/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: newProject.title,
+        tasks: newProject.tasks.map(task => task.name),
+        members: newProject.tasks.map(task => task.member),
+        start_date: newProject.startDate,
+        end_date: newProject.endDate,
+        completion_completed: 0, // Initialize with 0
+        completion_remaining: 100, // Initialize with 100
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setProjects([data, ...projects]);
+        setNewProject({
+          title: '',
+          description: '',
+          tasks: [{ name: '', member: members[0] }],
+          clientDetails: '',
+          clientNotes: '',
+          startDate: '',
+          endDate: '',
+          status: 'ongoing',
+        });
+      })
+      .catch((error) => console.error('Error adding project:', error));
   };
 
   const projectStatusCounts = projects.reduce(
@@ -206,22 +197,22 @@ const ProjectPage = () => {
         <div className="projects-list">
           {projects.map((project) => (
             <div
-              key={project.id}
-              className="project-cardd"
+              key={project._id}
+              className="project-card"
               data-status={project.status}
             >
-              <h2>{project.title}</h2>
+              <h2>{project.name}</h2>
               <p><strong>Description:</strong> {project.description}</p>
               <p><strong>Tasks:</strong></p>
               <ul>
                 {project.tasks.map((task, index) => (
-                  <li key={index}>{task.name} (Assigned to: {task.member})</li>
+                  <li key={index}>{task} (Assigned to: {project.members[index]})</li>
                 ))}
               </ul>
               <p><strong>Client Details:</strong> {project.clientDetails}</p>
               <p><strong>Client Notes:</strong> {project.clientNotes}</p>
-              <p><strong>Start Date:</strong> {project.startDate}</p>
-              <p><strong>End Date:</strong> {project.endDate}</p>
+              <p><strong>Start Date:</strong> {new Date(project.start_date).toLocaleDateString()}</p>
+              <p><strong>End Date:</strong> {new Date(project.end_date).toLocaleDateString()}</p>
             </div>
           ))}
         </div>
