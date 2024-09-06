@@ -1,0 +1,201 @@
+.calendar-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #b6efb8;
+    border-radius: 20px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    border-radius: 20px;
+}
+
+.calendar-cell {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    cursor: pointer;
+}
+
+.calendar-cell:hover {
+    background-color: #e0f7fa;
+}
+
+.calendar-date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.calendar-event {
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.important {
+    background-color: #e57373;
+}
+
+.not-important {
+    background-color: #64b5f6;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #a8e994;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 30%;
+    box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 90%; /* Ensures the modal is responsive */
+    max-height: 90%; /* Prevents overflow on smaller screens */
+    overflow-y: auto; /* Enables scrolling if content overflows */
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+.year-month-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.year-selector, .month-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48%; /* Adjust width for better alignment */
+    background-color: #4CAF50;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.year-selector label, .month-selector label {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.year-selector select, .month-selector select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.year-selector select:focus, .month-selector select:focus {
+    outline: none;
+    border-color: #45a049;
+}
+
+.year-selector select:hover, .month-selector select:hover {
+    background-color: #f2f2f2;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.day-names {
+    margin-bottom: 10px;
+    background-color: #a8e994;
+    color:#06530a;
+    border-radius: 20px;
+}
+
+.calendar-day-name {
+    background-color: #4CAF50;
+    color:white;
+    border-radius: 20px;
+}

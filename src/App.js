@@ -6,6 +6,7 @@ import ProjectPage from './pages/ProjectPage';
 import TaskPage from './components/Task/TaskPage'; // Import the TaskPage component
 import Sidebar from './components/Sidebar';
 import TeamMembersPage from './pages/TeamMembersPage'; // Import the TeamMembersPage component
+import CalendarPage from './components/Calendar/CalendarPage';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/projects" element={<ProjectPage />} />
             <Route path="/tasks" element={<TaskPage />} /> {/* Add this route */}
             <Route path="/team" element={<TeamMembersPage />} /> {/* Add Team Members route */}
+            <Route path="/calendar" element={<CalendarPage />} />
           </Routes>
         </main>
       </div>
