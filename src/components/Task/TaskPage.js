@@ -1,5 +1,6 @@
 // src/components/Task/TaskPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import './TaskPage.css';
@@ -7,55 +8,8 @@ import './TaskPage.css';
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-const initialTasks = [
-  {
-    id: 1,
-    project: 'Project Alpha',
-    title: 'Task 1',
-    description: 'Description for Task 1',
-    notes: 'Notes from manager',
-    startDate: '2024-08-01',
-    endDate: '2024-08-10',
-    expectedEndDate: '2024-08-09',
-    status: 'completed',
-  },
-  {
-    id: 2,
-    project: 'Project Alpha',
-    title: 'Task 2',
-    description: 'Description for Task 2',
-    notes: 'Notes from member',
-    startDate: '2024-08-05',
-    endDate: '2024-08-15',
-    expectedEndDate: '2024-08-14',
-    status: 'ongoing',
-  },
-  {
-    id: 3,
-    project: 'Project Beta',
-    title: 'Task A',
-    description: 'Description for Task A',
-    notes: 'Notes from manager',
-    startDate: '2024-07-01',
-    endDate: '2024-07-10',
-    expectedEndDate: '2024-07-09',
-    status: 'overdue',
-  },
-  {
-    id: 4,
-    project: 'Project Beta',
-    title: 'Task B',
-    description: 'Description for Task B',
-    notes: 'Notes from member',
-    startDate: '2024-07-05',
-    endDate: '2024-07-15',
-    expectedEndDate: '2024-07-14',
-    status: 'completed',
-  },
-];
-
 const TaskPage = () => {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
   const [newTask, setNewTask] = useState({
     project: '',
@@ -68,6 +22,20 @@ const TaskPage = () => {
     status: 'ongoing',
   });
 
+  useEffect(() => {
+    // Fetch all tasks on component mount
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/tasks');
+        setTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   const handleEditClick = (task) => {
     setEditingTask(task);
   };
@@ -77,11 +45,16 @@ const TaskPage = () => {
     setEditingTask({ ...editingTask, [name]: value });
   };
 
-  const handleUpdateTask = () => {
-    setTasks(tasks.map(task =>
-      task.id === editingTask.id ? editingTask : task
-    ));
-    setEditingTask(null);
+  const handleUpdateTask = async () => {
+    try {
+      const response = await axios.put(`http://localhost:4000/api/tasks/${editingTask._id}`, editingTask);
+      setTasks(tasks.map(task =>
+        task._id === editingTask._id ? response.data : task
+      ));
+      setEditingTask(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
   const handleAddTaskChange = (e) => {
@@ -89,21 +62,60 @@ const TaskPage = () => {
     setNewTask({ ...newTask, [name]: value });
   };
 
-  const handleAddNewTask = () => {
-    setTasks([
-      ...tasks,
-      { ...newTask, id: tasks.length + 1 }
-    ]);
-    setNewTask({
-      project: '',
-      title: '',
-      description: '',
-      notes: '',
-      startDate: '',
-      endDate: '',
-      expectedEndDate: '',
-      status: 'ongoing',
-    });
+  const handleAddNewTask = async () => {
+    try {
+      // Setting headers for the request
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+  
+      // Create the new task object with required properties
+      const newTaskPayload = {
+        project: newTask.project || 'Project Delta',
+        title: newTask.title || 'Task 3',
+        description: newTask.description || 'Description for Task 1',
+        notes: newTask.notes || 'Notes from manager',
+        startDate: newTask.startDate || '2024-08-01',
+        endDate: newTask.endDate || '2024-08-10',
+        expectedEndDate: newTask.expectedEndDate || '2024-08-09',
+        status: newTask.status || 'completed',
+        assignedTo: newTask.assignedTo || 'Bob',
+      };
+  
+      // Make the POST request to add the new task
+      const response = await axios.post('http://localhost:4000/api/tasks', newTaskPayload, config);
+  
+      // Update the task list with the newly added task
+      setTasks([...tasks, response.data]);
+  
+      // Reset the newTask state to initial values
+      setNewTask({
+        project: '',
+        title: '',
+        description: '',
+        notes: '',
+        startDate: '',
+        endDate: '',
+        expectedEndDate: '',
+        status: 'ongoing',
+        assignedTo: '',
+      });
+  
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+  };
+  
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/tasks/${taskId}`);
+      setTasks(tasks.filter(task => task._id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   // Calculate task status counts
@@ -152,7 +164,7 @@ const TaskPage = () => {
             <h2>{project}</h2>
             <div className="task-cards-container">
               {groupedTasks[project].map((task) => (
-                <div key={task.id} className={`task-card ${task.status}`}>
+                <div key={task._id} className={`task-card ${task.status}`}>
                   <h3>{task.title}</h3>
                   <p><strong>Description:</strong> {task.description}</p>
                   <p><strong>Notes:</strong> {task.notes}</p>
@@ -165,6 +177,7 @@ const TaskPage = () => {
                     </>
                   )}
                   <button onClick={() => handleEditClick(task)}>Edit</button>
+                  <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
                 </div>
               ))}
             </div>
