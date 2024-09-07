@@ -8,6 +8,14 @@ import './TaskPage.css';
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
+// Utility function to format dates
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString('en-US', options);
+};
+
+
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
@@ -167,9 +175,9 @@ const TaskPage = () => {
                   <h3>{task.title}</h3>
                   <p><strong>Description:</strong> {task.description}</p>
                   <p><strong>Notes:</strong> {task.notes}</p>
-                  <p><strong>Start Date:</strong> {task.startDate}</p>
-                  <p><strong>End Date:</strong> {task.endDate}</p>
-                  <p><strong>Expected End Date:</strong> {task.expectedEndDate}</p>
+                  <p><strong>Start Date:</strong> {formatDate(task.startDate)}</p>
+                  <p><strong>End Date:</strong> {formatDate(task.endDate)}</p>
+                  <p><strong>Expected End Date:</strong> {formatDate(task.expectedEndDate)}</p>
                   {task.status === 'completed' && (
                     <>
                       <p><strong>Completion Date:</strong> {task.endDate}</p>
