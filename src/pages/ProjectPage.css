@@ -64,35 +64,53 @@
     flex: 1;
   }
   
-  .projects-list {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
+
   .project-cardd {
     border-radius: 8px;
     padding: 15px;
     margin: 10px;
-    width: calc(33% - 20px);
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and borders are included in width */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #fff;
-    background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
     transition: background 0.3s ease;
+    color: white; /* Set text color for better visibility */
   }
   
   .project-cardd[data-status='completed'] {
-    background: linear-gradient(135deg, #66ea87 0%, #20e490 100%);
+    background-color: #66ea87;
   }
   
   .project-cardd[data-status='ongoing'] {
-    background: linear-gradient(135deg, #e6b86f 0%, #e4f44f 100%);
+    background-color: #e6b86f;
   }
   
   .project-cardd[data-status='overdue'] {
-    background: linear-gradient(135deg, #ab4f5d 0%, #e83748 100%);
+    background-color: #ab4f5d;
   }
   
   .project-cardd h2 {
     margin-top: 0;
+  }
+  
+  .project-columns {
+    display: flex;
+    flex: 3;
+    gap: 20px; /* Space between columns */
+  }
+  
+  .project-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .projects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between cards */
+  }
+  .completed-projects, .overdue-projects, .ongoing-projects {
+    flex: 1;
+    margin: 0 10px;
   }
   

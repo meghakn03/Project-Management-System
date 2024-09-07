@@ -25,9 +25,27 @@ const ProjectPage = () => {
   useEffect(() => {
     fetch('http://localhost:4000/api/projects')
       .then((response) => response.json())
-      .then((data) => setProjects(data))
+      .then((data) => {
+        // Calculate the status of each project
+        const updatedProjects = data.map((project) => {
+          const today = new Date();
+          const endDate = new Date(project.end_date);
+  
+          if (project.completion_completed === 100) {
+            project.status = 'completed';
+          } else if (today > endDate) {
+            project.status = 'overdue';
+          } else {
+            project.status = 'ongoing';
+          }
+  
+          return project;
+        });
+        setProjects(updatedProjects);
+      })
       .catch((error) => console.error('Error fetching projects:', error));
   }, []);
+  
 
   const handleChange = (e) => {
     const { name, value, dataset } = e.target;
@@ -121,6 +139,10 @@ const ProjectPage = () => {
     ]
   };
 
+  const completedProjects = projects.filter((project) => project.status === 'completed');
+  const overdueProjects = projects.filter((project) => project.status === 'overdue');
+  const ongoingProjects = projects.filter((project) => project.status === 'ongoing');
+
   return (
     <div className="project-page">
       <div className="form-container">
@@ -194,15 +216,15 @@ const ProjectPage = () => {
           />
           <button onClick={handleAddProject}>Add Project</button>
         </div>
-        <div className="projects-list">
-          {projects.map((project) => (
-            <div
-              key={project._id}
-              className="project-card"
-              data-status={project.status}
-            >
-              <h2>{project.name}</h2>
-              <p><strong>Description:</strong> {project.description}</p>
+
+        <div className="project-columns">
+          <div className="completed-projects">
+          <div className="project-column">
+            <h2>Completed Projects</h2>
+            {completedProjects.map((project) => (
+              <div key={project._id} className="project-cardd" data-status={project.status}>
+                <h3>{project.name}</h3>
+                <p><strong>Description:</strong> {project.description}</p>
               <p><strong>Tasks:</strong></p>
               <ul>
                 {project.tasks.map((task, index) => (
@@ -213,8 +235,55 @@ const ProjectPage = () => {
               <p><strong>Client Notes:</strong> {project.clientNotes}</p>
               <p><strong>Start Date:</strong> {new Date(project.start_date).toLocaleDateString()}</p>
               <p><strong>End Date:</strong> {new Date(project.end_date).toLocaleDateString()}</p>
-            </div>
-          ))}
+              </div>
+            ))}
+                          </div>
+          </div>
+
+          <div className="overdue-projects">
+          <div className="project-column">
+            <h2>Deadline-Crossed Projects</h2>
+            {overdueProjects.map((project) => (
+              <div key={project._id} className="project-cardd" data-status={project.status}>
+                <h3>{project.name}</h3>
+                <p><strong>Description:</strong> {project.description}</p>
+              <p><strong>Tasks:</strong></p>
+              <ul>
+                {project.tasks.map((task, index) => (
+                  <li key={index}>{task} (Assigned to: {project.members[index]})</li>
+                ))}
+              </ul>
+              <p><strong>Client Details:</strong> {project.clientDetails}</p>
+              <p><strong>Client Notes:</strong> {project.clientNotes}</p>
+              <p><strong>Start Date:</strong> {new Date(project.start_date).toLocaleDateString()}</p>
+              <p><strong>End Date:</strong> {new Date(project.end_date).toLocaleDateString()}</p>
+              </div>
+            ))}
+                          </div>
+
+          </div>
+
+          <div className="ongoing-projects">
+          <div className="project-column">
+            <h2>Ongoing Projects</h2>
+            {ongoingProjects.map((project) => (
+              <div key={project._id} className="project-cardd" data-status={project.status}>
+                <h3>{project.name}</h3>
+                <p><strong>Description:</strong> {project.description}</p>
+              <p><strong>Tasks:</strong></p>
+              <ul>
+                {project.tasks.map((task, index) => (
+                  <li key={index}>{task} (Assigned to: {project.members[index]})</li>
+                ))}
+              </ul>
+              <p><strong>Client Details:</strong> {project.clientDetails}</p>
+              <p><strong>Client Notes:</strong> {project.clientNotes}</p>
+              <p><strong>Start Date:</strong> {new Date(project.start_date).toLocaleDateString()}</p>
+              <p><strong>End Date:</strong> {new Date(project.end_date).toLocaleDateString()}</p>
+              </div>
+            ))}
+                          </div>
+          </div>
         </div>
       </div>
       <div className="chart-container">

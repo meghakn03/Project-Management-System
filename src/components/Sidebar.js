@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
+import { getCurrentDate } from '../utils/dateUtils';
 
 const Sidebar = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const location = useLocation();
+  const [currentDate, setCurrentDate] = useState({});
 
-  // Set the selected item based on the current path
-  React.useEffect(() => {
+  useEffect(() => {
+    // Set selected item based on the current path
     setSelectedItem(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {
+    // Get current date and set it in state
+    setCurrentDate(getCurrentDate());
+  }, []);
 
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
         <h2>Project Management</h2>
+        <div className="current-date">
+          <p>{currentDate.day}, {currentDate.month} {currentDate.date}, {currentDate.year}</p>
+        </div>
       </div>
       <nav className="sidebar-nav">
         <ul>
