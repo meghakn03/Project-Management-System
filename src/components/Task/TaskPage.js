@@ -107,7 +107,6 @@ const TaskPage = () => {
       console.error('Error adding task:', error);
     }
   };
-  
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -178,6 +177,8 @@ const TaskPage = () => {
                   )}
                   <button onClick={() => handleEditClick(task)}>Edit</button>
                   <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
+                  {/* New Edit Button */}
+                  <button onClick={() => handleEditClick(task)}>Edit Details</button>
                 </div>
               ))}
             </div>
@@ -279,6 +280,11 @@ const TaskPage = () => {
             value={newTask.expectedEndDate}
             onChange={handleAddTaskChange}
           />
+          <select name="status" value={newTask.status} onChange={handleAddTaskChange}>
+            <option value="ongoing">Ongoing</option>
+            <option value="completed">Completed</option>
+            <option value="overdue">Overdue</option>
+          </select>
           <button onClick={handleAddNewTask}>Add Task</button>
           <button onClick={() => setNewTask({ ...newTask, project: '' })}>Cancel</button>
         </div>
