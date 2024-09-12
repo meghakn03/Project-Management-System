@@ -21,12 +21,14 @@ mongoose.connect(process.env.MONGO_URI, {
 const projectsRoutes = require('./routes/projectsRoutes'); // Adjust the path if needed
 const tasksRoutes = require('./routes/tasksRoutes'); // New tasks routes
 const teamMemberRoutes = require('./routes/teamMemberRoutes');
+const eventRoutes = require('./routes/eventRoutes'); // New events routes
 
 
 // Use the projects route
 app.use('/api/projects', projectsRoutes);
 app.use('/api/tasks', tasksRoutes); // Add this line for tasks routes
 app.use('/api/team-members', teamMemberRoutes); // Add this line for team member routes
+app.use('/api/events', eventRoutes); // Add this line for events routes
 
 
 

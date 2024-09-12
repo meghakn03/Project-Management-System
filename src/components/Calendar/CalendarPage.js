@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CalendarPage.css';
 
 const CalendarPage = () => {
@@ -19,6 +19,54 @@ const CalendarPage = () => {
 
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+    useEffect(() => {
+        fetchEvents();
+    }, [selectedYear, selectedMonth]);
+
+    const fetchEvents = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/api/events');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setEvents(data);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        if (eventName && selectedDate) {
+            const newEvent = {
+                date: selectedDate,
+                eventName,
+                eventType
+            };
+
+            try {
+                const response = await fetch('http://localhost:4000/api/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newEvent),
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setEvents([...events, data]);
+                setIsModalOpen(false);
+                setEventName('');
+                fetchEvents(); // Refresh events after adding a new one
+            } catch (error) {
+                console.error('Error adding event:', error);
+            }
+        }
+    };
+
     // Get the number of days in the selected month
     const getDaysInMonth = (month, year) => {
         return new Date(year, month, 0).getDate();
@@ -27,12 +75,6 @@ const CalendarPage = () => {
     // Get the first day of the month (0 = Sunday, 1 = Monday, ...)
     const getFirstDayOfMonth = (month, year) => {
         return new Date(year, month - 1, 1).getDay();
-    };
-
-    // Function to add an event to the calendar
-    const addEvent = (date, eventName, eventType) => {
-        const newEvent = { date, eventName, eventType };
-        setEvents([...events, newEvent]);
     };
 
     // Function to render events for a specific day
@@ -55,16 +97,6 @@ const CalendarPage = () => {
         const formattedMonth = String(selectedMonth).padStart(2, '0');
         setSelectedDate(`${selectedYear}-${formattedMonth}-${formattedDay}`);
         setIsModalOpen(true);
-    };
-
-    // Handle form submission
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        if (eventName) {
-            addEvent(selectedDate, eventName, eventType);
-            setIsModalOpen(false);
-            setEventName('');
-        }
     };
 
     // Render days for the current selected month and year
