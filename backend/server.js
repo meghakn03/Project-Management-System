@@ -20,10 +20,14 @@ mongoose.connect(process.env.MONGO_URI, {
 // Import routes
 const projectsRoutes = require('./routes/projectsRoutes'); // Adjust the path if needed
 const tasksRoutes = require('./routes/tasksRoutes'); // New tasks routes
+const teamMemberRoutes = require('./routes/teamMemberRoutes');
+
 
 // Use the projects route
 app.use('/api/projects', projectsRoutes);
 app.use('/api/tasks', tasksRoutes); // Add this line for tasks routes
+app.use('/api/team-members', teamMemberRoutes); // Add this line for team member routes
+
 
 
 app.listen(port, () => {
